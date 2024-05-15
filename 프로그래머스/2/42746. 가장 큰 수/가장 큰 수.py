@@ -1,14 +1,19 @@
 def solution(numbers):
-    # 각 숫자를 세 번씩 이어붙인 문자열을 기준으로 정렬하여 가장 큰 수를 만듦
-    sorted_numbers = sorted(map(str, numbers), key=lambda x: x*3, reverse=True)
-    answer = str(int(''.join(sorted_numbers)))  # 정렬된 문자열을 합쳐서 정수로 변환한 후 다시 문자열로 변환
-    
+    num_dict = {}
+    result_lst = []
+    for num in numbers:
+        front = str(num)[0]
+        if front in num_dict.keys():
+            num_dict[front].append(num)
+        else:
+            num_dict[front] = [num]
+   
+    print(num_dict)    
+        
+    answer = ''
     return answer
 
-# 예시 호출
-numbers1 = [6, 10, 2]
-numbers2 = [3, 30, 34, 5, 9]
-print(solution(numbers1))  # 출력: "6210"
-print(solution(numbers2))  # 출력: "9534330"
 
-
+# 무조건 앞자리가 큰게 오면 좋은 것?
+# 1자리수는 쉬운데, 2자리로 넘어갈 경우....
+#각 숫자를 dic으로 관리?
