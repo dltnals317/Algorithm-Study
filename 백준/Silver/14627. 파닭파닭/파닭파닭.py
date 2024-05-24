@@ -19,6 +19,5 @@ while left <= right:
         left = mid + 1
 
 max_length = right
-used_lst = [(l_lst[i] // max_length) * max_length for i in range(len(l_lst))]
 remain_lst = sum(l_lst) - (max_length * c)
 print(remain_lst)
