@@ -1,50 +1,57 @@
 def solution(park, routes): #상,우,하,좌
-    dx = [-1, 0, 1, 0]
-    dy = [0, 1, 0, -1]
-    
-    park_lst = [list(p) for p in park]  
-    
-    W = len(park[0])  # 공원의 가로 길이
-    H = len(park)     # 공원의 세로 길이
-    
-    # 현재 위치 찾기
-    for i in range(H):
-        for j in range(W):
-            if park_lst[i][j] == "S":
-                now_x, now_y = i, j
-    
-    for command in routes:
-        direction = command[0]
-        distance = int(command[2:])
-        if direction == 'N':
-            nx = now_x - distance
-            ny = now_y
-        elif direction == 'S':
-            nx = now_x + distance
-            ny = now_y
-        elif direction == 'W':
-            nx = now_x
-            ny = now_y - distance
-        elif direction == 'E':
-            nx = now_x
-            ny = now_y + distance 
-            
-        # 이동 가능한지 확인
-        blocked = False
-        if 0 <= nx < H and 0 <= ny < W:
-            if direction in ['E', 'W']:
-                for i in range(min(now_y, ny), max(now_y, ny) + 1):
-                    if park_lst[nx][i] =='X':
-                        blocked = True
-                        break
-                    
-            elif direction in ['S', 'N']:
-                for i in range(min(now_x, nx), max(now_x, nx) + 1):
-                    if park_lst[i][ny] =='X':
-                        blocked = True
-                        break
-                    
-            if not blocked:
-                now_x, now_y = nx, ny
+    H = len(park)
+    W = len(park[0])
+    d_row = [-1,1]
+    d_col = [-1,1]
+    for i in range(len(park)):
+        for j in range(len(park[i])):
+            if park[i][j] == 'S':
+                now_row,now_col = i,j 
                 
-    return (now_x, now_y)
+    for rt in routes:
+        direction,length= rt.split()
+        if direction == 'E': #동 -> j의 이동
+            n_row = now_row
+            n_col = now_col + (d_col[1]*int(length))
+        elif direction =='S': #남 -> i의 이동
+            n_row = now_row + (d_row[1]*int(length))
+            n_col = now_col
+        elif direction == 'W': #서 -> j의 이동
+            n_row = now_row
+            n_col = now_col + (d_col[0]*int(length))
+        elif direction == 'N': #북
+            n_row = now_row + (d_row[0]*int(length))
+            n_col = now_col
+        
+        blocked = False
+        # 남쪽 또는 북쪽으로 이동하는 경우
+        if direction == 'S':
+            for i in range(now_row + 1, n_row + 1):
+                if i < 0 or i >= H or park[i][now_col] == 'X':
+                    blocked = True
+                    break
+        elif direction == 'N':
+            for i in range(now_row - 1, n_row - 1, -1):
+                if i < 0 or i >= H or park[i][now_col] == 'X':
+                    blocked = True
+                    break
+        
+        # 동쪽 또는 서쪽으로 이동하는 경우
+        elif direction == 'E':
+            for j in range(now_col + 1, n_col + 1):
+                if j < 0 or j >= W or park[now_row][j] == 'X':
+                    blocked = True
+                    break
+        elif direction == 'W':
+            for j in range(now_col - 1, n_col - 1, -1):
+                if j < 0 or j >= W or park[now_row][j] == 'X':
+                    blocked = True
+                    break
+        
+        if blocked:
+            continue
+        else:
+            now_row, now_col = n_row, n_col
+    
+    result = [now_row, now_col]
+    return result
