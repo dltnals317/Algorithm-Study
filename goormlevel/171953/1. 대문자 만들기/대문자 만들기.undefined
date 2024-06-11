@@ -1,0 +1,11 @@
+# -*- coding: utf-8 -*-
+# UTF-8 encoding when using korean
+N = int(input())
+string = input()
+upper_lst = []
+for x in string:
+	str = x.upper()
+	upper_lst.append(str)
+	
+
+print(''.join(upper_lst))
