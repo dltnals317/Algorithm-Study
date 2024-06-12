@@ -1,0 +1,5 @@
+cnt = 0
+lst = list(map(int,input().split()))
+for x in lst:
+	cnt+=x
+print(cnt)
