@@ -1,0 +1,16 @@
+def issuccess():
+	n = int(input())
+	money = 0
+	for i in range(n):
+		c,v = input().split()
+		v = int(v)
+		if c == 'in':
+			money+=v
+		elif c == 'out':
+			money -= v
+			if money < 0:
+				return "fail"
+	return "success"
+		
+result = issuccess()
+print(result)
