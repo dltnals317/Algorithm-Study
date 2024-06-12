@@ -1,0 +1,11 @@
+n,k = map(int,input().split())
+attendance = []
+for _ in range(n):
+	name,height = input().split()
+	attendance.append((name,height))
+
+
+attendance = sorted(attendance, key=lambda x: (x[0], x[1]))
+
+x,y = attendance[k-1]
+print(x,y)
