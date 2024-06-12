@@ -1,0 +1,17 @@
+n,m = map(int,input().split())
+	
+lst = []
+for i in range(n):
+	c,v=map(int,input().split())
+	lst.append((c,v))
+
+for cost,count in lst:
+	for i in range(1,count+1):
+		m-=cost
+		if m<0:
+			break
+if m<0:
+	print("No")
+else:
+	print(m)
+	
