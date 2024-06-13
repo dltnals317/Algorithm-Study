@@ -1,0 +1,60 @@
+#2차원 배열로 좌표를 다룬다
+# 폭탄은 튜플로 다룬다
+
+
+n,k = map(int,input().split())
+ground = []
+bomb = []
+value = {}
+for i in range(n):
+	row = list(input().split())
+	ground.append(row)
+
+
+for y in range(len(ground)):
+	for x in range(len(ground[y])):
+		value[(y,x)] = ground[y][x]
+
+def bomb(tup,ground):
+	y,x = tup[0]-1 , tup[1]-1
+	#현위치,상,우,하,좌
+	dx = [0,0,1,0,-1]
+	dy = [0,-1,0,1,0]
+	
+	for i in range(5): #0,1,2,3
+		nx = dx[i] + x
+		ny = dy[i] + y
+		if 0<=nx<=len(ground)-1 and 0<=ny <=len(ground)-1:
+			state = value[(ny,nx)]
+			if state == "#":
+				continue
+			elif state == "0":
+				if ground[ny][nx]== "0":
+					ground[ny][nx] = 1
+				else:
+					ground[ny][nx] +=1
+			elif state == "@":
+				if ground[ny][nx]== "@":
+					ground[ny][nx] = 2
+				else:
+					ground[ny][nx] +=2
+
+	
+
+for i in range(k):
+	y,x = map(int,input().split())
+	bomb((y,x),ground)
+	
+max_val = 0
+for y in range(len(ground)):
+    for x in range(len(ground[y])):
+        if str(ground[y][x]).isdigit():
+            if int(ground[y][x]) > max_val:
+                max_val = int(ground[y][x])
+
+print(max_val)
+	
+	
+	
+
+	
