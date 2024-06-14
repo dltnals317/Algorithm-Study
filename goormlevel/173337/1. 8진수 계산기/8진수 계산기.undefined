@@ -1,0 +1,17 @@
+N = int(input())
+lst = list(map(int,input().split()))
+ten = 0
+for x in lst:
+	ten+=x
+	
+mox = 1
+last = []
+while(mox!=0):
+	mox = ten // 8
+	last_val = ten % 8
+	last.append(last_val)
+	ten = mox
+last.reverse()
+result=list(map(str,last))
+print(''.join(result))
+	
