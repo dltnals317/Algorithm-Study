@@ -1,0 +1,33 @@
+dict = {}
+cnt_dict={}
+n,m = map(int,input().split())
+lst = []
+for i in range(n):
+	subject,score = map(int,input().split())
+	lst.append((subject,score))
+	
+for x in lst:
+	subject,socre = x[0],x[1]
+	if subject in dict.keys():
+		dict[subject]+=socre
+		cnt_dict[subject]+=1
+	else:
+		dict[subject]=socre
+		cnt_dict[subject]=1
+
+for subject,score in dict.items():
+	dict[subject]= score / cnt_dict[subject]
+		
+
+max_result = (0,0)
+for sub,sc in dict.items():
+	if sc > max_result[1]:
+		max_result = (sub,sc)
+	elif sc == max_result[1]:
+		if sub > max_result[0]:
+			continue
+		else:
+			max_result = (sub,sc)
+print(max_result[0])
+
+	
