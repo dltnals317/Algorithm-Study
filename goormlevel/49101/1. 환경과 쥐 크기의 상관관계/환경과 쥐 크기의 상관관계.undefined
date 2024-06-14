@@ -1,0 +1,42 @@
+
+#몸집이 최대 10만개인데, 일일히 돌면서 범위의 값이 있는지 확인하는건 백퍼 시간초과가 뜰거야
+#역으로, 몸집 크기 리스트에 있는 몸집 값에서, 대표값에 표시하는 식으로 하자
+
+
+n = int(input())
+A_lst = list(map(int,input().split()))
+B_lst = list(map(int,input().split()))
+central_A={}
+central_B={}
+for x in A_lst:
+	for i in range(x-2,x+3): #x-2,x-1,x,x+1,x+2 #2,3,4,5,6
+		if i not in central_A.keys():
+			central_A[i] = 1
+		else:
+			central_A[i]+=1
+
+
+for x in B_lst: #[4,1,3,9,5,11,2]
+	for i in range(x-2,x+3): #x-2,x-1,x,x+1,x+2 #2,3,4,5,6
+		if i not in central_B.keys():
+			central_B[i] = 1
+		else:
+			central_B[i]+=1
+	
+max_value_A = max(central_A.values())
+max_keys_A = [key for key, value in central_A.items() if value == max_value_A]
+result_key_A = min(max_keys_A)
+
+max_value_B = max(central_B.values())
+max_keys_B = [key for key, value in central_B.items() if value == max_value_B]
+result_key_B = min(max_keys_B)
+
+print(result_key_A,result_key_B)
+
+if result_key_A > result_key_B:
+	print("good")
+else:
+	print("bad")
+		
+
+
