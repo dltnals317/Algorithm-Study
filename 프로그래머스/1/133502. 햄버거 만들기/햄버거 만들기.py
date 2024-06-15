@@ -4,20 +4,15 @@
 
 
 def solution(ingredient):
-    cnt = 0
     i = 0
-
-    while i <= len(ingredient) - 4:
-        # 1-2-3-1 패턴을 찾으면
-        if ingredient[i:i+4] == [1, 2, 3, 1]:
-            # 패턴을 리스트에서 제거
+    cnt=0
+    while i<=len(ingredient) - 4:
+        if ingredient[i:i+4] == [1,2,3,1]:
+            cnt+=1
             del ingredient[i:i+4]
-            # 카운트 증가
-            cnt += 1
-            # i를 4만큼 뒤로 돌려서 같은 위치에서 다시 검사
-            i = max(0, i - 3)
+            i = max(0,i-3)
         else:
-            # 패턴이 아닌 경우 다음 위치로 이동
-            i += 1
-
+            i+=1
+            
+    
     return cnt
