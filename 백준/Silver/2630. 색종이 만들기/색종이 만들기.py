@@ -26,8 +26,8 @@ def all_white(two_matraix):
                 return False
     return True
 
-def devide_merge_paper(two_matrix_arr):
-
+def devide_merge_paper(two_matraix_arr):
+    N = len(two_matraix_arr)
     # 기본 케이스: 1x1 배열
     if N == 1:
         if two_matrix_arr[0][0] == 1:
@@ -36,38 +36,41 @@ def devide_merge_paper(two_matrix_arr):
             return (1, 0)  # 흰색은 1개, 파란색은 0개
     
     top_left,top_right,bottom_left,bottom_right = [],[],[],[]
-    mid = len(two_matrix_arr)//2
-    for lst in two_matrix_arr[:mid]:
+    mid = N//2
+    for lst in two_matraix_arr[:mid]:
         top_left.append(lst[:len(lst)//2])
-    for lst in two_matrix_arr[:mid]:
+    for lst in two_matraix_arr[:mid]:
         top_right.append(lst[len(lst)//2:])
-    for lst in two_matrix_arr[mid:]:
+    for lst in two_matraix_arr[mid:]:
         bottom_left.append(lst[:len(lst)//2])
-    for lst in two_matrix_arr[mid:]:
+    for lst in two_matraix_arr[mid:]:
         bottom_right.append(lst[len(lst)//2:])
     
+    all = [top_left,top_right,bottom_left,bottom_right]
+
+    
     blue = white = 0
+    
+    for lst in all:
+        if all_blue(lst):
+            blue+=1
+        
+        elif all_white(lst):
+            white+=1
+        else:
+            (sub_blue,sub_white) = devide_merge_paper(lst)
+            blue+=sub_blue
+            white+=sub_white
+           
+    return (blue,white)
 
-    if all_blue(two_matrix_arr):
-        blue += 1
-    elif all_white(two_matrix_arr):
-        white += 1
-    else:
-        sub_blue, sub_white = devide_merge_paper(top_left)
-        blue += sub_blue
-        white += sub_white
-        sub_blue, sub_white = devide_merge_paper(top_right)
-        blue += sub_blue
-        white += sub_white
-        sub_blue, sub_white = devide_merge_paper(bottom_left)
-        blue += sub_blue
-        white += sub_white
-        sub_blue, sub_white = devide_merge_paper(bottom_right)
-        blue += sub_blue
-        white += sub_white
 
-    return (blue, white)
+if all_blue(input_paper):
+    (blue,white) = (1,0)
 
-blue, white = devide_merge_paper(input_paper)
+elif all_white(input_paper):
+    (blue,white) = (0,1)
+else:
+    (blue,white) = devide_merge_paper(input_paper)    
 print(white)
 print(blue)
