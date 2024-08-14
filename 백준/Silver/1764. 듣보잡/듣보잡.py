@@ -1,18 +1,29 @@
-N, M = map(int, input().split())
+N,M = map(int,input().split())
+
 
 no_hear = set()
+no_see = set()
+result = set()
 for _ in range(N):
     name = input()
     no_hear.add(name)
 
-no_see = set()
 for _ in range(M):
     name = input()
     if name in no_hear:
         no_see.add(name)
 
-# 결과를 정렬하여 출력
-result_list = sorted(no_see)
-print(len(result_list))
-for name in result_list:
+if len(no_see) < len(no_hear):
+    for name in no_see:
+        if name in no_hear:
+            result.add(name)
+
+else:
+    for name in no_hear:
+        if name in no_see:
+            result.add(name)
+
+print(len(result))
+result=sorted(result)
+for name in result:
     print(name)
