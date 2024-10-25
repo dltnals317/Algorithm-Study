@@ -1,44 +1,38 @@
-# 상(북), 우(동), 하(남), 좌(서)
-dr = [-1, 0, 1, 0] 
-dc = [0, 1, 0, -1]
-
 N, M = map(int, input().split())
-r, c, sight = map(int, input().split())
+r, c, d = map(int, input().split())
+ground = [list(map(int, input().split())) for _ in range(N)]
 
-room = [list(map(int, input().split())) for _ in range(N)]
+# 방향: 북(0), 동(1), 남(2), 서(3)
+dr = [-1, 0, 1, 0]  # 행 이동
+dc = [0, 1, 0, -1]  # 열 이동
 
-cnt = 0
+cleaned_count = 0
+end = False
 
-def now_clean(row, col, lst):
-    global cnt
-    if lst[row][col] == 0:  # 현재 칸이 청소되지 않았다면
-        lst[row][col] = 2  # 현재 칸을 청소 (2는 청소 완료 상태)
-        cnt += 1
+while not end:
+    if ground[r][c] == 0:  # 현재 칸이 청소되지 않은 경우
+        ground[r][c] = 2  # 청소 완료 표시
+        cleaned_count += 1  # 청소한 칸 카운트 증가
 
-def around_check_and_action(row, col, sight, lst):
-    now_clean(row, col, lst)  # 현재 칸 청소
-    
-    for _ in range(4):  # 4 방향 회전
-        new_sight = (sight + 3) % 4  # 반시계 방향으로 회전
-        nr = row + dr[new_sight]
-        nc = col + dc[new_sight]
-        
-        if 0 <= nr < N and 0 <= nc < M :
-            if lst[nr][nc] == 0:  # 청소되지 않은 빈 칸이 있을 때
-                around_check_and_action(nr, nc, new_sight, lst)
-                return
-        
-        sight = new_sight  # 다음 회전을 위해 방향 업데이트
-    
-    # 네 방향 모두 청소된 경우 후진
-    back_dir = (sight + 2) % 4  # 현재 방향의 반대 방향
-    nr = row + dr[back_dir]
-    nc = col + dc[back_dir]
-    if 0 <= nr < N and 0 <= nc < M and lst[nr][nc] != 1:  # 벽이 아닐 때
-        around_check_and_action(nr, nc, sight, lst)
+    all_around_clean = True
 
-# 로봇 청소 시작
-around_check_and_action(r, c, sight, room)
+    # 네 방향 탐색
+    for _ in range(4):
+        d = (d + 3) % 4  # 반시계 방향 회전
+        nr, nc = r + dr[d], c + dc[d]
 
-# 최종 청소한 칸의 수 출력
-print(cnt)
+        # 청소되지 않은 빈 칸이 있는 경우
+        if 0 <= nr < N and 0 <= nc < M and ground[nr][nc] == 0:
+            r, c = nr, nc  # 이동
+            all_around_clean = False
+            break
+
+    if all_around_clean:  # 네 방향 모두 청소된 경우
+        # 후진
+        nr, nc = r - dr[d], c - dc[d]
+        if 0 <= nr < N and 0 <= nc < M and ground[nr][nc] != 1:  # 벽이 아니면 후진
+            r, c = nr, nc
+        else:  # 후진할 수 없으면 작동 종료
+            end = True
+
+print(cleaned_count)
