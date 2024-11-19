@@ -1,5 +1,3 @@
-# 리스트 슬라이싱
-# discount 배열 길이 - 10까지 for문을 돌면서, 리스트 슬라이싱 적용
 
 def solution(want, number, discount):
     
