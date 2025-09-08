@@ -1,35 +1,41 @@
-# min 계속 초기화
-
 from collections import deque
 
-
 N,M = map(int,input().split())
+road = [list(map(int,input())) for _ in range(N)]
 
-maze = [list(map(int,input())) for _ in range(N)]
+def miro_bfs():
+  visited = [[False]*M for _ in range(N)]
+  q = deque([((0,0),1)])
+  visited[0][0] = True
+  
 
-#좌,상,우,하
-dx = [-1,0,1,0]
-dy = [0,-1,0,1]
+  #상,좌,하,우
+  dr = [-1,0,1,0]
+  dc = [0,-1,0,1]
+  
+  temp = []
 
-# 방문 여부 확인 배열
-visited = [[False] * M for _ in range(N)]
-# 큐 생성 및 시작점 추가
-queue = deque([(0, 0, 1)])
-visited[0][0] = True  # 시작점 방문 처리
-
-
-while queue:
-    (i,j,r) = queue.popleft()
+  while q:
+    (r,c),d = q.popleft()
     
-     # 도착 지점에 도달한 경우 경로 길이 출력 후 종료
-    if i == N - 1 and j == M - 1:
+    
+    for i in range(4):
+      n_r = r + dr[i]
+      n_c = c + dc[i]
+      if (n_r,n_c) == (N-1,M-1):
+        temp.append(d+1)
+        
         break
-    for k in range(4):
-        nx = j + dx[k]
-        ny = i + dy[k]
-        if 0<= nx < M and 0 <= ny < N and maze[ny][nx] == 1 and not visited[ny][nx]:
-            visited[ny][nx] = True  # 방문 처리
-            queue.append((ny,nx,r+1))
-     
-print(r)          
-            
+      
+      #벽이거나 이미 방문한 노드라면
+      if (0 <= n_r < N and 0 <= n_c < M) == False or visited[n_r][n_c] == True:
+        continue
+      
+      if road[n_r][n_c] == 1:
+        visited[n_r][n_c] = True
+        q.append(((n_r,n_c),d+1))
+
+  return temp
+  
+result = miro_bfs()
+print(min(result))
