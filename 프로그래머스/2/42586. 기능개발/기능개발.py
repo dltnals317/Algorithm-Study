@@ -1,32 +1,29 @@
 from collections import deque
 def solution(progresses, speeds):
     answer = []
-    
-    #필요한 작업 기간 기준으로 스택/큐에 넣기
-    
     q = deque()
+    tmp_stack = []
+    for i in range(len(progresses)):
+        remain_process = 100 - progresses[i]
+        days = (remain_process // speeds[i]) + (0 if remain_process % speeds[i] == 0 else 1)
+        q.append(days)
     
-    for i,pg in enumerate(progresses):
-        remain_pg = 100 - pg
-        need_time = remain_pg // speeds[i]
-        if (remain_pg % speeds[i] == 0):
-            q.append(need_time)
-        else:
-            q.append(need_time+1)
-    cnt = 1
-    pivot = q.popleft()
+    start = q[0]
+    tmp = []
+    cnt = 0
+    
     while q:
-        #[5,10,1,1,20,1]
-        
-        now = q.popleft()
-        
-        if(pivot >= now):
-            cnt+=1
-            
+        print("q",q)
+        print("tmp",tmp)
+        print("start",start)
+        target = q.popleft()
+        if target <= start:
+            tmp.append(target)
         else:
-            answer.append(cnt)
-            cnt = 1
-            pivot = now
-    answer.append(cnt)
-            
+            answer.append(len(tmp))
+            start = target
+            tmp = [target]
+           
+    if len(tmp)>0:
+        answer.append(len(tmp))
     return answer
