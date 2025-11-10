@@ -1,37 +1,37 @@
+from collections import deque,defaultdict
 import sys
-from collections import deque, defaultdict
 
-input = sys.stdin.readline  
+input = sys.stdin.readline
+n,m,k,x = map(int,input().split())
 
-n, m, k, x = map(int, input().split())
+
 
 graph = defaultdict(list)
 for _ in range(m):
-    a, b = map(int, input().split())
+    a,b = map(int,input().split())
     graph[a].append(b)
+visited = [False]*(n+1)
 
-visited = [False] * (n + 1)
+
+q = deque([(x,0)])
 visited[x] = True
-
-q = deque([(x, 0)])
 result = []
 
-while q:
-    node, dist = q.popleft()
 
+while(q):
+    node, dist = q.popleft()
     if dist == k:
         result.append(node)
         continue
-
-  
-    for next_node in graph[node]:
-        if not visited[next_node]:
-            visited[next_node] = True
-            q.append((next_node, dist + 1))
-
-
+    if dist < k:
+        for next_node in graph[node]:
+            if not visited[next_node]:
+                visited[next_node] = True
+                q.append((next_node, dist + 1))
 if result:
     result.sort()
-    sys.stdout.write("\n".join(map(str, result)) + "\n") 
+    for r in result:
+        print(r)
 else:
-    sys.stdout.write("-1\n")
+    print(-1)
+        
