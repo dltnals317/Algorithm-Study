@@ -1,38 +1,37 @@
-import heapq
 import sys
-input = sys.stdin.readline
-N,M,K,X = map(int,input().split())
+from collections import deque, defaultdict
 
-graph = [[] for _ in range(N+1)]
+input = sys.stdin.readline  
 
-INF = int(1e9)
-distance_lst = [INF] * (N+1)
+n, m, k, x = map(int, input().split())
 
-for _ in range(M):
-    a,b = map(int,input().split())
-    graph[a].append((b,1))
+graph = defaultdict(list)
+for _ in range(m):
+    a, b = map(int, input().split())
+    graph[a].append(b)
 
-def priory_distance():
-    q = []
-    heapq.heappush(q,(0,X)) # q = [(0,X)]
-    distance_lst[X] = 0
-    while q:
-        distance,now = heapq.heappop(q) #0,X
-        for city,length in graph[now]: #(2,1),(3,1):
-            if (distance_lst[now]+ 1 <distance_lst[city]):
-                distance_lst[city] = distance_lst[now] + 1
-                heapq.heappush(q,(distance_lst[city],city))
-            
-    return distance_lst
-                
-            
-lst = priory_distance()
-okay=[]
-for i in range(len(lst)):
-    if lst[i] == K:
-        okay.append(i)
-if len(okay)== 0:
-    print(-1)
+visited = [False] * (n + 1)
+visited[x] = True
+
+q = deque([(x, 0)])
+result = []
+
+while q:
+    node, dist = q.popleft()
+
+    if dist == k:
+        result.append(node)
+        continue
+
+  
+    for next_node in graph[node]:
+        if not visited[next_node]:
+            visited[next_node] = True
+            q.append((next_node, dist + 1))
+
+
+if result:
+    result.sort()
+    sys.stdout.write("\n".join(map(str, result)) + "\n") 
 else:
-    print(*okay)
-        
+    sys.stdout.write("-1\n")
