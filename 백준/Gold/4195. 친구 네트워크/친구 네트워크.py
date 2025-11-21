@@ -1,4 +1,3 @@
-
 # union에서 rank 비교하는 로직도 필요
 
 t = int(input())
@@ -32,7 +31,7 @@ for _ in range(t):
         if b not in parents:
             parents[b] = b
             counts[b] = 1    
-        if find(a) != find(b):
-            union(a, b)
+       
+        union(a, b)
         root = find(a)
         print(counts[root])
